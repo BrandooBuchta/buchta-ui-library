@@ -1,0 +1,49 @@
+@import url("@mdi/font/css/materialdesignicons.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light mode default colors */
+[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #171717;
+  --default-50: #f0f0f0;
+  --default-100: #e0e0e0;
+  --default-200: #cccccc;
+  --default-300: #b3b3b3;
+  --default-400: #999999;
+  --default-500: #808080;
+  --default-600: #666666;
+  --default-700: #4d4d4d;
+  --default-800: #333333;
+  --default-900: #1a1a1a;
+}
+
+/* Dark mode default colors (inverted scale) */
+[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --default-50: #000000; /* Black in dark mode */
+  --default-100: #050505;
+  --default-200: #0a0a0a;
+  --default-300: #0f0f0f;
+  --default-400: #141414;
+  --default-500: #1a1a1a;
+  --default-600: #262626;
+  --default-700: #333333;
+  --default-800: #4d4d4d;
+  --default-900: #ffffff; /* White in dark mode */
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
