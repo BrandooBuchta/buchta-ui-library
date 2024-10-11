@@ -1,9 +1,12 @@
+import { FC } from "react";
+import React from "react";
+
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import Button from "@/components/UI/Button";
 import Card from "@/components/UI/Card";
 import CookiesBar from "@/components/utils/CookiesBar";
 
-const Home: React.FC = () => {
+const Home: FC = () => {
   const callMercedes = async (): Promise<void> => {
     await new Promise<void>((resolve) => {
       setTimeout(() => {

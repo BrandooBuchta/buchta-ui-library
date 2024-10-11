@@ -1,6 +1,14 @@
-import React, { MouseEventHandler, useState, useRef } from "react";
+import {
+  MouseEventHandler,
+  useState,
+  useRef,
+  FC,
+  MouseEvent,
+  CSSProperties,
+} from "react";
 import { motion } from "framer-motion";
 import { darken, lighten } from "polished";
+import React from "react";
 
 interface ButtonProps {
   children: JSX.Element | string;
@@ -12,9 +20,10 @@ interface ButtonProps {
   className?: string;
   endContent?: JSX.Element;
   startContent?: JSX.Element;
+  style?: CSSProperties;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: FC<ButtonProps> = ({
   children,
   size = "md",
   variant = "shadow",
@@ -24,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
   className = "",
   endContent,
   startContent,
+  style: customStyle,
 }) => {
   const [rippleArray, setRippleArray] = useState<any[]>([]);
   const [isHovered, setIsHovered] = useState(false);
@@ -31,7 +41,7 @@ const Button: React.FC<ButtonProps> = ({
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [buttonWidth, setButtonWidth] = useState<number | undefined>(undefined);
 
-  const createRipple = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const createRipple = (event: MouseEvent<HTMLButtonElement>) => {
     const button = event.currentTarget;
     const rect = button.getBoundingClientRect();
     const size = Math.max(button.clientWidth, button.clientHeight);
@@ -47,7 +57,7 @@ const Button: React.FC<ButtonProps> = ({
     }, 500);
   };
 
-  const handleClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
     if (onClick) {
       createRipple(event);
 
@@ -161,6 +171,7 @@ const Button: React.FC<ButtonProps> = ({
             ? lighten(0.4, color)
             : variantStyle.backgroundColor,
         width: buttonWidth ? `${buttonWidth}px` : "auto", // Preserve width during loading
+        ...customStyle,
       }}
       onClick={handleClick}
       onMouseEnter={() => setIsHovered(true)}

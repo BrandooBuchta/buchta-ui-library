@@ -1,5 +1,6 @@
 import { useTheme } from "next-themes";
 import { FC, useEffect, useState } from "react";
+import React from "react";
 
 const ThemeSwitcher: FC = () => {
   const { theme, setTheme } = useTheme();

@@ -1,4 +1,5 @@
 import { useTheme } from "next-themes";
+import { CSSProperties, FC } from "react";
 import React from "react";
 
 interface CardProps {
@@ -8,17 +9,19 @@ interface CardProps {
   padding?: string;
   variant?: "bordered" | "shadow" | "faded";
   className?: string;
+  style?: CSSProperties;
 }
 
-const Card: React.FC<CardProps> = ({
+const Card: FC<CardProps> = ({
   children,
   width,
   height,
   padding,
   variant = "shadow",
   className,
+  style: customStyle,
 }) => {
-  let style: React.CSSProperties = {
+  let style: CSSProperties = {
     width,
     height,
     padding,
@@ -54,7 +57,7 @@ const Card: React.FC<CardProps> = ({
   }
 
   return (
-    <div className={className} style={style}>
+    <div className={className} style={{ ...style, ...customStyle }}>
       {children}
     </div>
   );
