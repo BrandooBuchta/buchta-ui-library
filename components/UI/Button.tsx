@@ -30,7 +30,7 @@ const Button: FC<ButtonProps> = ({
   onClick,
   color = "#006fee",
   radius = "lg",
-  className = "",
+  className,
   endContent,
   startContent,
   style: customStyle,
@@ -155,6 +155,7 @@ const Button: FC<ButtonProps> = ({
     <button
       ref={buttonRef}
       className={`
+        ${className}
         relative
         overflow-hidden
         flex items-center justify-center gap-2
@@ -162,7 +163,6 @@ const Button: FC<ButtonProps> = ({
         ${sizing()}
         ${variantClassName}
         rounded-${radius}
-        ${className}
       `}
       style={{
         ...variantStyle,

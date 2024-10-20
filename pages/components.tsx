@@ -1,10 +1,20 @@
 import { FC } from "react";
 import React from "react";
+import Link from "next/link";
 
 import ThemeSwitcher from "@/components/ThemeSwitcher";
 import Button from "@/components/UI/Button";
 import Card from "@/components/UI/Card";
 import CookiesBar from "@/components/utils/CookiesBar";
+
+const templates = [
+  "click-through-page",
+  "landing-page",
+  "lead-capture-page",
+  "sales-page",
+  "squeeze-page",
+  "thank-you-page",
+];
 
 const Home: FC = () => {
   const callMercedes = async (): Promise<void> => {
@@ -65,7 +75,14 @@ const Home: FC = () => {
         ))}
       </div>
 
-      <p>TODO: Create an async button as natural</p>
+      <div className="flex flex-col">
+        {templates.map((e) => (
+          <Link key={e} href={`/templates/${e}`}>
+            {e}
+          </Link>
+        ))}
+      </div>
+
       <p>TODO: Create a variant: like shadow, minimalistic, ...</p>
     </div>
   );
