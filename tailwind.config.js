@@ -5,9 +5,13 @@ export default {
     "./components/**/*.{js,ts,jsx,tsx}",
     "./layouts/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: ["class", '[data-theme="dark"]'], // Přepínání dark mode podle atributu
+  darkMode: "class", // Přepínání dark mode podle atributu
   theme: {
     extend: {
+      backgroundImage: {
+        "custom-gradient":
+          "linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888)",
+      },
       colors: {
         default: {
           50: "var(--default-50)",
@@ -26,6 +30,12 @@ export default {
   },
   plugins: [],
   safelist: [
-    "rounded-xs", "rounded-sm", "rounded-md", "rounded-lg", "rounded-xl", "rounded-none", "rounded-full", 
-  ]
+    "rounded-xs",
+    "rounded-sm",
+    "rounded-md",
+    "rounded-lg",
+    "rounded-xl",
+    "rounded-none",
+    "rounded-full",
+  ],
 };

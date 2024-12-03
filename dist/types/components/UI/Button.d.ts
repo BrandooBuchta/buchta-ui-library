@@ -1,6 +1,6 @@
-import { MouseEventHandler, FC, CSSProperties } from "react";
+import { MouseEventHandler, FC, CSSProperties, AriaAttributes } from "react";
 interface ButtonProps {
-    children: JSX.Element | string;
+    children?: JSX.Element | string;
     size?: "xs" | "sm" | "md" | "lg" | "xl";
     variant?: "shadow" | "solid" | "bordered" | "text" | "tonal";
     radius?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
@@ -10,6 +10,8 @@ interface ButtonProps {
     endContent?: JSX.Element;
     startContent?: JSX.Element;
     style?: CSSProperties;
+    "aria-label"?: string;
+    isIconOnly?: boolean;
 }
-declare const Button: FC<ButtonProps>;
+declare const Button: FC<ButtonProps & AriaAttributes>;
 export default Button;

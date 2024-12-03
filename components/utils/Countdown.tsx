@@ -5,8 +5,8 @@ import duration from "dayjs/plugin/duration";
 dayjs.extend(duration);
 
 interface CountdownProps {
-  title: string;
-  subTitle: string;
+  title: JSX.Element | JSX.Element[] | string;
+  subTitle: JSX.Element | JSX.Element[] | string;
   targetDate: string; // Datum ve formátu "YYYY-MM-DD"
 }
 

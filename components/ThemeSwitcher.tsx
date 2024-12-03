@@ -1,25 +1,23 @@
 import { useTheme } from "next-themes";
-import { FC, useEffect, useState } from "react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const ThemeSwitcher: FC = () => {
-  const { theme, setTheme } = useTheme();
+const ThemeSwitcher: React.FC = () => {
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Komponenta připravena po SSR
+  useEffect(() => setMounted(true), []);
 
   if (!mounted) return null;
 
   return (
-    <div className="flex items-center">
-      <button
-        className="px-4 py-2 bg-default-500 text-white rounded-md"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      >
-        Switch to {theme === "dark" ? "Light" : "Dark"} Mode
-      </button>
+    <div>
+      <p>
+        Aktuální téma: <strong>{resolvedTheme}</strong>
+      </p>
+      <button onClick={() => setTheme("light")}>Light</button>
+      <button onClick={() => setTheme("dark")}>Dark</button>
+      <button onClick={() => setTheme("system")}>System</button>
     </div>
   );
 };

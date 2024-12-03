@@ -3,12 +3,54 @@ import React from "react";
 import Link from "next/link";
 
 import SalesPage from "@/components/page-templates/SalesPage";
-import { Button, Card } from "@/components";
+import { Button, Card, Countdown, RemainingCounter } from "@/components";
 import WarningBar from "@/components/utils/WarningBar";
 import ReferenceCard from "@/components/utils/ReferenceCard";
 import SmallProfile from "@/components/utils/SmallProfile";
 import Footer from "@/components/utils/Footer";
 import { FooterSection } from "@/interfaces/utils";
+import TextInput from "@/components/UI/TextInput";
+import ExitPopup from "@/components/utils/ExitPopUp";
+
+const ExampleForm = () => (
+  <div className="flex flex-col gap-4">
+    <TextInput
+      color="#0070f3"
+      error={false}
+      inputSize="md"
+      label="Jméno"
+      placeholder="Jan Novák"
+      variant="filled"
+    />
+    <TextInput
+      color="#0070f3"
+      error={false}
+      inputSize="md"
+      label="Email"
+      placeholder="jan@novak.cz"
+      variant="filled"
+    />
+    <TextInput
+      color="#0070f3"
+      error={false}
+      inputSize="md"
+      label="Telefon"
+      placeholder="+420 123 456 789"
+      variant="filled"
+    />
+    <div className="flex flex-col gap-3 mt-5">
+      <Button className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all">
+        Chci vydělávat více peněz!
+      </Button>
+      <Button
+        className="w-full py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all"
+        variant="text"
+      >
+        Nechci vydělávat více peněz...
+      </Button>
+    </div>
+  </div>
+);
 
 const Story: FC = () => {
   return (
@@ -113,115 +155,140 @@ const SalesPagePreview: FC = () => {
   ];
 
   return (
-    <SalesPage
-      actionButtons={
-        <Button className="m-5" size="xl">
-          Action Button!
-        </Button>
-      }
-      content={
-        <div className="w-[800px] h-[500px] shadow-xl rounded-lg">
-          <iframe
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            className="w-[800px] h-[500px] shadow-xl rounded-lg"
-            referrerPolicy="strict-origin-when-cross-origin"
-            src="https://www.youtube.com/embed/y0sF5xhGreA?si=kH_rokeMXjehqPAS"
-            title="YouTube video player"
+    <>
+      <ExitPopup
+        form={<ExampleForm />}
+        image="/profile-mock.png"
+        subTitle="Mohlo by vás to stát tisíce! Nechte nám své údaje a ZDARMA vám pošleme 3 tipy, které vám mohou pomoci vydělat více peněz."
+        title="Chystáte se odejít?"
+      />
+      <SalesPage
+        actionButtons={
+          <Button className="m-5" size="xl">
+            Action Button!
+          </Button>
+        }
+        callToAction={
+          <div className="mx-auto text-lg text-center max-w-[1000px]">
+            Posuňte svůj byznys na novou úroveň s námi! Vyplňte krátký formulář
+            a získejte cenovou nabídku na míru ZDARMA. Ukážeme vám, co může
+            skutečně nastartovat váš růst. Stačí kliknout níže a my se o zbytek
+            postaráme!
+          </div>
+        }
+        content={
+          <div className="w-[800px] h-[500px] shadow-xl rounded-lg">
+            <iframe
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              className="w-[800px] h-[500px] shadow-xl rounded-lg"
+              referrerPolicy="strict-origin-when-cross-origin"
+              src="https://www.youtube.com/embed/y0sF5xhGreA?si=kH_rokeMXjehqPAS"
+              title="YouTube video player"
+            />
+          </div>
+        }
+        flow="col"
+        fomo={
+          <RemainingCounter
+            currentState={5}
+            max={10}
+            min={0}
+            subTitle="Rada a vypracování toho co vám bude fungovat není bezcená - proto tato nabídka platí pouze pro prvních 10 lidí! ⏳"
+            title="Cenová nabídka ZDARMA"
           />
-        </div>
-      }
-      flow="col"
-      footer={<Footer companyName="TvojeFirma" sections={footerSections} />}
-      guarantee={
-        <Card className="py-3 px-5">
-          <SmallProfile
-            avatar={
-              <i className="mdi mdi-check-decagram text-sky-600 text-5xl" />
-            }
-            fallback="X"
-            subtitle="Všechno co nám dáte se vám vrátí, a to několikanásobně!"
-            title="GARANTUJEME!"
+        }
+        footer={<Footer companyName="TvojeFirma" sections={footerSections} />}
+        guarantee={
+          <Card className="py-3 px-5">
+            <SmallProfile
+              avatar={
+                <i className="mdi mdi-check-decagram text-sky-600 text-5xl" />
+              }
+              fallback="X"
+              subtitle="Všechno co nám dáte se vám vrátí, a to několikanásobně!"
+              title="GARANTUJEME!"
+            />
+          </Card>
+        }
+        header={<div className="text-center">LOGO</div>}
+        landingButtons={
+          <Button className="m-5" size="xl">
+            Chci vaše služby!
+          </Button>
+        }
+        promise={
+          <>
+            <h2 className="font-bold text-5xl">Můžeme vám slíbit...</h2>
+            <p className="text-lg text-center max-w-[1000px]">
+              Pokud nám věnujete ještě pár minut a sjednáte si s námi
+              konzultaci, připravíme pro vás zcela ZDARMA cenovou nabídku na
+              míru. Ukážeme vám, co přesně může posunout váš byznys kupředu. A
+              jestli to necháte na nás? To už bude jen na vás!
+            </p>
+          </>
+        }
+        referenceButtons={
+          <Button className="m-5" size="xl">
+            Chci vaše služby!
+          </Button>
+        }
+        references={[1, 2, 3, 4, 5].map((e) => (
+          <ReferenceCard
+            key={e}
+            reference={{
+              author: `Author ${e}`,
+              company: `Company ${e}`,
+              avatar: "/profile-mock.png",
+              href: "/",
+              icon: "mdi-check-decagram",
+              text: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur beatae placeat, dicta quaerat, accusantium libero architecto minus quia amet obcaecati harum soluta voluptates, repellat quae. Eveniet sint tempore perspiciatis. Sequi? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Esse, hic quibusdam ut modi dolore, mollitia eos et totam nostrum ab ipsum? Eligendi animi aspernatur magnam laudantium, pariatur illum! Molestias, autem.",
+            }}
           />
-        </Card>
-      }
-      header={<div className="text-center">LOGO</div>}
-      landingButtons={
-        <Button className="m-5" size="xl">
-          Chci vaše služby!
-        </Button>
-      }
-      promise={
-        <>
-          <h2 className="font-bold text-5xl">Můžeme vám slíbit...</h2>
-          <p className="text-lg text-center max-w-[1000px]">
-            Pokud nám věnujete ještě pár minut a sjednáte si s námi konzultaci,
-            připravíme pro vás zcela ZDARMA cenovou nabídku na míru. Ukážeme
-            vám, co přesně může posunout váš byznys kupředu. A jestli to necháte
-            na nás? To už bude jen na vás!
+        ))}
+        story={<Story />}
+        storyButtons={
+          <Button className="m-5" size="xl">
+            Story Button!
+          </Button>
+        }
+        subTitle={
+          <p className="text-center">
+            Věříme že rozdíl mezi firmami co na trhu vyhrají a těmi co prohrají,
+            je ten že vítězové se soustředí na to v čem jsou nejlepší a práci ve
+            které nejsou nejlepší nechají někomu jinému. Svěřením své prezentace
+            profesionálům si uvolníte ruce pro růst a klíčová rozhodnutí.
           </p>
-        </>
-      }
-      referenceButtons={
-        <Button className="m-5" size="xl">
-          Chci vaše služby!
-        </Button>
-      }
-      references={[1, 2, 3, 4, 5].map((e) => (
-        <ReferenceCard
-          key={e}
-          reference={{
-            author: `Author ${e}`,
-            company: `Company ${e}`,
-            avatar: "/profile-mock.png",
-            href: "/",
-            icon: "mdi-check-decagram",
-            text: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aspernatur beatae placeat, dicta quaerat, accusantium libero architecto minus quia amet obcaecati harum soluta voluptates, repellat quae. Eveniet sint tempore perspiciatis. Sequi? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Esse, hic quibusdam ut modi dolore, mollitia eos et totam nostrum ab ipsum? Eligendi animi aspernatur magnam laudantium, pariatur illum! Molestias, autem.",
-          }}
-        />
-      ))}
-      story={<Story />}
-      storyButtons={
-        <Button className="m-5" size="xl">
-          Story Button!
-        </Button>
-      }
-      subTitle={
-        <p className="text-center">
-          Věříme že rozdíl mezi firmami co na trhu vyhrají a těmi co prohrají,
-          je ten že vítězové se soustředí na to v čem jsou nejlepší a práci ve
-          které nejsou nejlepší nechají někomu jinému. Svěřením své prezentace
-          profesionálům si uvolníte ruce pro růst a klíčová rozhodnutí.
-        </p>
-      }
-      title={
-        <h1 className="text-4xl font-bold mb-4 text-center mt-5">
-          Naše služby jsou legální steroidy pro Váš business.
-        </h1>
-      }
-      videoButtons={
-        <Button className="m-5" size="xl">
-          Video Button!
-        </Button>
-      }
-      warningBar={
-        <WarningBar
-          content={
-            <>
-              Speciální nabídka pro Říjen:{" "}
-              <Link
-                className="text-yellow-400 font-bold underline"
-                href="https://www.brandoo.cz"
-                target="_blank"
-              >
-                Brandoo
-              </Link>{" "}
-              - WMS jako jedni z prvích při koupi 3 a více služeb{" "}
-              <b className="text-yellow-400">ZDARMA</b>!
-            </>
-          }
-        />
-      }
-    />
+        }
+        title={
+          <h1 className="text-4xl font-bold mb-4 text-center mt-5">
+            Naše služby jsou legální steroidy pro Váš business.
+          </h1>
+        }
+        videoButtons={
+          <Button className="m-5" size="xl">
+            Video Button!
+          </Button>
+        }
+        warningBar={
+          <WarningBar
+            content={
+              <>
+                Speciální nabídka pro Říjen:{" "}
+                <Link
+                  className="text-yellow-400 font-bold underline"
+                  href="https://www.brandoo.cz"
+                  target="_blank"
+                >
+                  Brandoo
+                </Link>{" "}
+                - WMS jako jedni z prvích při koupi 3 a více služeb{" "}
+                <b className="text-yellow-400">ZDARMA</b>!
+              </>
+            }
+          />
+        }
+      />
+    </>
   );
 };
 

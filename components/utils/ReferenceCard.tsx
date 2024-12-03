@@ -17,7 +17,7 @@ interface ReferenceCardProps {
 
 const ReferenceCard: React.FC<ReferenceCardProps> = ({ reference }) => {
   return (
-    <div className="bg-neutral-100 rounded-xl shadow-xl p-5 w-full">
+    <div className="rounded-xl shadow-xl p-5 w-full">
       <SmallProfile
         avatar={reference.avatar}
         fallback={reference.author[0]}

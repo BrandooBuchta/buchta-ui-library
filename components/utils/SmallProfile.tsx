@@ -17,7 +17,7 @@ const SmallProfile: React.FC<SmallProfileProps> = ({
 }) => {
   return (
     <div className="flex items-center">
-      <div className="h-fit w-fit gradient-border ig-gradient rounded-full p-1">
+      <div className="h-fit w-fit rounded-full p-1">
         {typeof avatar === "string" ? (
           <img
             alt={fallback}

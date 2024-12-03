@@ -18,22 +18,36 @@ function _arrayWithHoles(r) { if (Array.isArray(r)) return r; }
 var ThemeSwitcher = function ThemeSwitcher() {
   var _useTheme = (0, _nextThemes.useTheme)(),
     theme = _useTheme.theme,
-    setTheme = _useTheme.setTheme;
+    setTheme = _useTheme.setTheme,
+    resolvedTheme = _useTheme.resolvedTheme;
   var _useState = (0, _react.useState)(false),
     _useState2 = _slicedToArray(_useState, 2),
     mounted = _useState2[0],
     setMounted = _useState2[1];
+
+  // Komponenta připravena po SSR
   (0, _react.useEffect)(function () {
-    setMounted(true);
+    return setMounted(true);
   }, []);
   if (!mounted) return null;
   return /*#__PURE__*/_react["default"].createElement("div", {
-    className: "flex items-center"
-  }, /*#__PURE__*/_react["default"].createElement("button", {
-    className: "px-4 py-2 bg-default-500 text-white rounded-md",
-    onClick: function onClick() {
-      return setTheme(theme === "dark" ? "light" : "dark");
+    style: {
+      padding: "1rem",
+      background: "#f3f3f3",
+      borderRadius: "8px"
     }
-  }, "Switch to ", theme === "dark" ? "Light" : "Dark", " Mode"));
+  }, /*#__PURE__*/_react["default"].createElement("p", null, "Aktu\xE1ln\xED t\xE9ma: ", /*#__PURE__*/_react["default"].createElement("strong", null, resolvedTheme)), /*#__PURE__*/_react["default"].createElement("button", {
+    onClick: function onClick() {
+      return setTheme("light");
+    }
+  }, "Light"), /*#__PURE__*/_react["default"].createElement("button", {
+    onClick: function onClick() {
+      return setTheme("dark");
+    }
+  }, "Dark"), /*#__PURE__*/_react["default"].createElement("button", {
+    onClick: function onClick() {
+      return setTheme("system");
+    }
+  }, "System"));
 };
 var _default = exports["default"] = ThemeSwitcher;

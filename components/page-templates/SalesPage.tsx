@@ -1,7 +1,4 @@
-import React, { useState } from "react";
-
-import ExitPopup from "../utils/ExitPopUp";
-import Countdown from "../utils/Countdown";
+import React from "react";
 
 interface SalesPageProps {
   flow?: "col" | "row";
@@ -20,6 +17,9 @@ interface SalesPageProps {
   promise?: JSX.Element | JSX.Element[] | string;
   guarantee?: JSX.Element | string;
   footer?: JSX.Element | JSX.Element[] | string;
+  fomo?: JSX.Element;
+  callToAction?: JSX.Element | JSX.Element[] | string;
+  shouldBeHeaderInContainer?: boolean;
 }
 
 const SalesPage: React.FC<SalesPageProps> = ({
@@ -39,30 +39,21 @@ const SalesPage: React.FC<SalesPageProps> = ({
   guarantee,
   actionButtons,
   footer,
+  fomo,
+  callToAction,
+  shouldBeHeaderInContainer
 }) => {
-  const [showPopup, setShowPopup] = useState<boolean>(true);
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
-  };
-
   return (
     <div>
       {warningBar}
+      {!shouldBeHeaderInContainer && header}
       <div className="container mx-auto p-8">
-        {showPopup && (
-          <ExitPopup
-            message="We have a special offer just for you!"
-            title="Wait! Before you leave..."
-            onClose={handleClosePopup}
-          />
-        )}
-        {header}
+        {shouldBeHeaderInContainer && header}
         {flow === "col" ? (
           <div className="flex flex-col items-center">
             {title}
             {subTitle}
-            {landingButtons}
+            <div className="flex gap-2 justify-center">{landingButtons}</div>
             <div className="my-16 flex justify-center flex-col items-center gap-5">
               {content}
 
@@ -74,7 +65,7 @@ const SalesPage: React.FC<SalesPageProps> = ({
             <div className="w-1/2 gap-3 flex flex-col p-3">
               {title}
               {subTitle}
-              {landingButtons}
+              <div className="flex gap-2 justify-center">{landingButtons}</div>
             </div>
             {content}
           </div>
@@ -89,18 +80,8 @@ const SalesPage: React.FC<SalesPageProps> = ({
           {promise}
           {guarantee}
         </div>
-        <div className="my-10">
-          <Countdown
-            subTitle="Rada a vypracování toho co vám bude fungovat není bezcená - proto tato nabídka platí pouze do konce měsíce! ⏳"
-            targetDate={"2024-10-30"}
-            title="Cenová nabídka ZDARMA"
-          />
-        </div>
-        <div className="mx-auto text-lg text-center max-w-[1000px]">
-          Posuňte svůj byznys na novou úroveň s námi! Vyplňte krátký formulář a
-          získejte cenovou nabídku na míru ZDARMA. Ukážeme vám, co může skutečně
-          nastartovat váš růst. Stačí kliknout níže a my se o zbytek postaráme!
-        </div>
+        <div className="my-10">{fomo}</div>
+        {callToAction}
         <div className="flex justify-center gap-2">{actionButtons}</div>
       </div>
       {footer}

@@ -4,8 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light mode default colors */
-[data-theme="light"] {
+/* Default (light) mode colors */
+:root {
   --background: #ffffff;
   --foreground: #171717;
   --default-50: #f0f0f0;
@@ -18,33 +18,59 @@
   --default-700: #4d4d4d;
   --default-800: #333333;
   --default-900: #1a1a1a;
+
+  /* Card styles */
+  --card-bg: #ffffff;
+  --card-text: #171717;
+  --card-border: #e0e0e0;
+  --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-/* Dark mode default colors (inverted scale) */
-[data-theme="dark"] {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --default-50: #000000; /* Black in dark mode */
-  --default-100: #050505;
-  --default-200: #0a0a0a;
-  --default-300: #0f0f0f;
-  --default-400: #141414;
-  --default-500: #1a1a1a;
-  --default-600: #262626;
-  --default-700: #333333;
-  --default-800: #4d4d4d;
-  --default-900: #ffffff; /* White in dark mode */
+/* Dark mode colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --default-50: #000000;
+    --default-100: #050505;
+    --default-200: #0a0a0a;
+    --default-300: #0f0f0f;
+    --default-400: #141414;
+    --default-500: #1a1a1a;
+    --default-600: #262626;
+    --default-700: #333333;
+    --default-800: #4d4d4d;
+    --default-900: #ffffff;
+
+    /* Card styles */
+    --card-bg: #181818; /* Světlejší tmavé pozadí */
+    --card-text: #eaeaea; /* Světlejší text */
+    --card-border: #333333; /* Decentní tmavý border */
+    --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.8); /* Výraznější stín */
+  }
 }
 
+/* Shared styles */
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Card styles */
+.card {
+  background-color: var(--card-bg);
+  color: var(--card-text);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Custom utilities */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
-

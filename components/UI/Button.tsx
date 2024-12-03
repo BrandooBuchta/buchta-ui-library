@@ -1,17 +1,18 @@
-import {
+import React, {
   MouseEventHandler,
   useState,
   useRef,
   FC,
   MouseEvent,
   CSSProperties,
+  useMemo,
+  AriaAttributes,
 } from "react";
 import { motion } from "framer-motion";
 import { darken, lighten } from "polished";
-import React from "react";
 
 interface ButtonProps {
-  children: JSX.Element | string;
+  children?: JSX.Element | string; // `children` je volitelné, protože u `isIconOnly` může být jen ikonka
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   variant?: "shadow" | "solid" | "bordered" | "text" | "tonal";
   radius?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
@@ -21,9 +22,11 @@ interface ButtonProps {
   endContent?: JSX.Element;
   startContent?: JSX.Element;
   style?: CSSProperties;
+  "aria-label"?: string;
+  isIconOnly?: boolean; // Přidána prop isIconOnly
 }
 
-const Button: FC<ButtonProps> = ({
+const Button: FC<ButtonProps & AriaAttributes> = ({
   children,
   size = "md",
   variant = "shadow",
@@ -34,70 +37,14 @@ const Button: FC<ButtonProps> = ({
   endContent,
   startContent,
   style: customStyle,
+  "aria-label": ariaLabel,
+  isIconOnly = false, // Výchozí hodnota
 }) => {
   const [rippleArray, setRippleArray] = useState<any[]>([]);
   const [isHovered, setIsHovered] = useState(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const [buttonWidth, setButtonWidth] = useState<number | undefined>(undefined);
 
-  const createRipple = (event: MouseEvent<HTMLButtonElement>) => {
-    const button = event.currentTarget;
-    const rect = button.getBoundingClientRect();
-    const size = Math.max(button.clientWidth, button.clientHeight);
-    const x = event.clientX - rect.left - size / 2;
-    const y = event.clientY - rect.top - size / 2;
-
-    const newRipple = { x, y, size };
-
-    setRippleArray((prev) => [...prev, newRipple]);
-
-    setTimeout(() => {
-      setRippleArray((prev) => prev.slice(1));
-    }, 500);
-  };
-
-  const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
-    if (onClick) {
-      createRipple(event);
-
-      const clickResult = onClick(event);
-
-      if (clickResult instanceof Promise) {
-        if (buttonRef.current) {
-          // Set button width before loading
-          setButtonWidth(buttonRef.current.offsetWidth);
-        }
-        setIsLoading(true);
-        try {
-          await clickResult;
-        } finally {
-          setIsLoading(false);
-          // Reset the width when loading finishes
-          setButtonWidth(undefined);
-        }
-      }
-    }
-  };
-
-  const sizing = () => {
-    switch (size) {
-      case "xs":
-        return "px-[15px] py-[7.5px] text-xs h-fit";
-      case "sm":
-        return "px-[20px] py-[8px] text-sm h-fit";
-      case "md":
-        return "px-[25px] py-[8px] text-md h-fit";
-      case "lg":
-        return "px-[25px] py-[8px] text-lg h-fit";
-      case "xl":
-        return "px-[25px] py-[10px] text-xl h-fit";
-      default:
-        return "";
-    }
-  };
-
-  const getVariantStyles = () => {
+  const variantStyles = useMemo(() => {
     switch (variant) {
       case "shadow":
         return {
@@ -135,9 +82,6 @@ const Button: FC<ButtonProps> = ({
           style: {
             backgroundColor: lighten(0.45, color),
             color: color,
-            backgroundColorHover: isHovered
-              ? lighten(0.4, color)
-              : lighten(0.45, color),
           },
         };
       default:
@@ -146,31 +90,72 @@ const Button: FC<ButtonProps> = ({
           style: {},
         };
     }
+  }, [variant, color, isHovered]);
+
+  const buttonStyles = useMemo(() => {
+    if (isIconOnly) {
+      return {
+        className: "w-[40px] h-[40px] flex items-center justify-center", // Pevný 1:1 poměr stran
+        style: {
+          padding: 0, // Zrušení vnitřního paddingu
+        },
+      };
+    }
+
+    switch (size) {
+      case "xs":
+        return { className: "px-[15px] py-[7.5px] text-xs h-fit" };
+      case "sm":
+        return { className: "px-[20px] py-[8px] text-sm h-fit" };
+      case "md":
+        return { className: "px-[25px] py-[8px] text-md h-fit" };
+      case "lg":
+        return { className: "px-[25px] py-[8px] text-lg h-fit" };
+      case "xl":
+        return { className: "px-[25px] py-[10px] text-xl h-fit" };
+      default:
+        return { className: "" };
+    }
+  }, [size, isIconOnly]);
+
+  const createRipple = (event: MouseEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget;
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(button.clientWidth, button.clientHeight);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+
+    const newRipple = { x, y, size };
+
+    setRippleArray((prev) => [...prev, newRipple]);
+
+    setTimeout(() => {
+      setRippleArray((prev) => prev.slice(1));
+    }, 500);
   };
 
-  const { className: variantClassName, style: variantStyle } =
-    getVariantStyles();
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+    createRipple(event);
+    if (onClick) onClick(event);
+  };
 
   return (
     <button
       ref={buttonRef}
+      aria-label={ariaLabel || "Button"}
       className={`
+        font-semibold
         ${className}
-        relative
-        overflow-hidden
-        flex items-center justify-center gap-2
-        transition-all
-        ${sizing()}
-        ${variantClassName}
+        ${variantStyles.className}
+        ${buttonStyles.className}
         rounded-${radius}
+        relative
+        transition-all
+        overflow-hidden
       `}
       style={{
-        ...variantStyle,
-        backgroundColor:
-          isHovered && variant === "tonal"
-            ? lighten(0.4, color)
-            : variantStyle.backgroundColor,
-        width: buttonWidth ? `${buttonWidth}px` : "auto", // Preserve width during loading
+        ...variantStyles.style,
+        ...buttonStyles.style,
         ...customStyle,
       }}
       onClick={handleClick}
@@ -199,16 +184,10 @@ const Button: FC<ButtonProps> = ({
           }}
         />
       ))}
-      {isLoading ? (
-        <motion.i
-          animate={{ rotate: 360 }}
-          className="mdi mdi-loading"
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        />
+      {isIconOnly ? (
+        children
       ) : (
-        <div className="flex gap-1 justify-center items-center">
-          {[startContent, children, endContent]}
-        </div>
+        <div className="flex gap-2">{[startContent, children, endContent]}</div>
       )}
     </button>
   );
