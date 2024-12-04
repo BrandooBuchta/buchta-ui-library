@@ -8,16 +8,16 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --default-50: #f0f0f0;
-  --default-100: #e0e0e0;
-  --default-200: #cccccc;
-  --default-300: #b3b3b3;
-  --default-400: #999999;
-  --default-500: #808080;
-  --default-600: #666666;
-  --default-700: #4d4d4d;
-  --default-800: #333333;
-  --default-900: #1a1a1a;
+  --default-50: #fafafa;
+  --default-100: #f5f5f5;
+  --default-200: #eeeeee;
+  --default-300: #e0e0e0;
+  --default-400: #bdbdbd;
+  --default-500: #9e9e9e;
+  --default-600: #757575;
+  --default-700: #616161;
+  --default-800: #424242;
+  --default-900: #212121;
 
   /* Card styles */
   --card-bg: #ffffff;
@@ -31,16 +31,16 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --default-50: #000000;
-    --default-100: #050505;
-    --default-200: #0a0a0a;
-    --default-300: #0f0f0f;
-    --default-400: #141414;
-    --default-500: #1a1a1a;
-    --default-600: #262626;
-    --default-700: #333333;
-    --default-800: #4d4d4d;
-    --default-900: #ffffff;
+    --default-50: #212121;
+    --default-100: #424242;
+    --default-200: #616161;
+    --default-300: #757575;
+    --default-400: #9e9e9e;
+    --default-500: #bdbdbd;
+    --default-600: #e0e0e0;
+    --default-700: #eeeeee;
+    --default-800: #f5f5f5;
+    --default-900: #fafafa;
 
     /* Card styles */
     --card-bg: #181818; /* Světlejší tmavé pozadí */
@@ -73,4 +73,133 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  /* Light mode */
+  .text-default-50 {
+    color: var(--default-50);
+  }
+  .text-default-100 {
+    color: var(--default-100);
+  }
+  .text-default-200 {
+    color: var(--default-200);
+  }
+  .text-default-300 {
+    color: var(--default-300);
+  }
+  .text-default-400 {
+    color: var(--default-400);
+  }
+  .text-default-500 {
+    color: var(--default-500);
+  }
+  .text-default-600 {
+    color: var(--default-600);
+  }
+  .text-default-700 {
+    color: var(--default-700);
+  }
+  .text-default-800 {
+    color: var(--default-800);
+  }
+  .text-default-900 {
+    color: var(--default-900);
+  }
+
+  .bg-default-50 {
+    background-color: var(--default-50);
+  }
+  .bg-default-100 {
+    background-color: var(--default-100);
+  }
+  .bg-default-200 {
+    background-color: var(--default-200);
+  }
+  .bg-default-300 {
+    background-color: var(--default-300);
+  }
+  .bg-default-400 {
+    background-color: var(--default-400);
+  }
+  .bg-default-500 {
+    background-color: var(--default-500);
+  }
+  .bg-default-600 {
+    background-color: var(--default-600);
+  }
+  .bg-default-700 {
+    background-color: var(--default-700);
+  }
+  .bg-default-800 {
+    background-color: var(--default-800);
+  }
+  .bg-default-900 {
+    background-color: var(--default-900);
+  }
+  
+  /* Dark mode (nested under @media) */
+  @media (prefers-color-scheme: dark) {
+    .text-default-50 {
+      color: var(--default-50);
+    }
+    .text-default-100 {
+      color: var(--default-100);
+    }
+    .text-default-200 {
+      color: var(--default-200);
+    }
+    .text-default-300 {
+      color: var(--default-300);
+    }
+    .text-default-400 {
+      color: var(--default-400);
+    }
+    .text-default-500 {
+      color: var(--default-500);
+    }
+    .text-default-600 {
+      color: var(--default-600);
+    }
+    .text-default-700 {
+      color: var(--default-700);
+    }
+    .text-default-800 {
+      color: var(--default-800);
+    }
+    .text-default-900 {
+      color: var(--default-900);
+    }
+    .bg-default-50 {
+      background-color: var(--default-50);
+    }
+    .bg-default-100 {
+      background-color: var(--default-100);
+    }
+    .bg-default-200 {
+      background-color: var(--default-200);
+    }
+    .bg-default-300 {
+      background-color: var(--default-300);
+    }
+    .bg-default-400 {
+      background-color: var(--default-400);
+    }
+    .bg-default-500 {
+      background-color: var(--default-500);
+    }
+    .bg-default-600 {
+      background-color: var(--default-600);
+    }
+    .bg-default-700 {
+      background-color: var(--default-700);
+    }
+    .bg-default-800 {
+      background-color: var(--default-800);
+    }
+    .bg-default-900 {
+      background-color: var(--default-900);
+    }
+  }
 }
+
+

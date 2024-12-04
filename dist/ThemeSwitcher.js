@@ -30,13 +30,7 @@ var ThemeSwitcher = function ThemeSwitcher() {
     return setMounted(true);
   }, []);
   if (!mounted) return null;
-  return /*#__PURE__*/_react["default"].createElement("div", {
-    style: {
-      padding: "1rem",
-      background: "#f3f3f3",
-      borderRadius: "8px"
-    }
-  }, /*#__PURE__*/_react["default"].createElement("p", null, "Aktu\xE1ln\xED t\xE9ma: ", /*#__PURE__*/_react["default"].createElement("strong", null, resolvedTheme)), /*#__PURE__*/_react["default"].createElement("button", {
+  return /*#__PURE__*/_react["default"].createElement("div", null, /*#__PURE__*/_react["default"].createElement("p", null, "Aktu\xE1ln\xED t\xE9ma: ", /*#__PURE__*/_react["default"].createElement("strong", null, resolvedTheme)), /*#__PURE__*/_react["default"].createElement("button", {
     onClick: function onClick() {
       return setTheme("light");
     }
