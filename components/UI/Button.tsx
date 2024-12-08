@@ -9,21 +9,21 @@ import React, {
   AriaAttributes,
 } from "react";
 import { motion } from "framer-motion";
-import { darken, lighten } from "polished";
 
 interface ButtonProps {
-  children?: JSX.Element | string; // `children` je volitelné, protože u `isIconOnly` může být jen ikonka
+  children?: JSX.Element | string;
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   variant?: "shadow" | "solid" | "bordered" | "text" | "tonal";
   radius?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
   onClick?: MouseEventHandler<HTMLButtonElement> | (() => Promise<void>);
-  color?: string;
+  color?: "primary" | "secondary" | string;
   className?: string;
   endContent?: JSX.Element;
   startContent?: JSX.Element;
   style?: CSSProperties;
   "aria-label"?: string;
-  isIconOnly?: boolean; // Přidána prop isIconOnly
+  isIconOnly?: boolean;
+  isDisabled?: boolean;
 }
 
 const Button: FC<ButtonProps & AriaAttributes> = ({
@@ -31,74 +31,66 @@ const Button: FC<ButtonProps & AriaAttributes> = ({
   size = "md",
   variant = "shadow",
   onClick,
-  color = "#006fee",
+  color = "primary",
   radius = "lg",
   className,
   endContent,
   startContent,
   style: customStyle,
   "aria-label": ariaLabel,
-  isIconOnly = false, // Výchozí hodnota
+  isIconOnly = false,
+  isDisabled = false,
 }) => {
   const [rippleArray, setRippleArray] = useState<any[]>([]);
   const [isHovered, setIsHovered] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
+  const resolveColor = () => {
+    switch (color) {
+      case "primary":
+        return "bg-primary text-white hover:bg-primary-dark";
+      case "secondary":
+        return "bg-secondary text-white hover:bg-secondary-dark";
+      default:
+        return `text-white hover:opacity-[0.9]`;
+    }
+  };
+
   const variantStyles = useMemo(() => {
+    const resolvedColorClass = resolveColor();
+
     switch (variant) {
       case "shadow":
         return {
-          className: "shadow-2xl text-white hover:shadow-lg",
-          style: {
-            boxShadow: `0 6px 25px -3px ${darken(0.2, color)}, 0 2px 3px -2px ${lighten(0.2, color)}`,
-            backgroundColor: color,
-          },
+          className: `shadow-2xl hover:shadow-lg ${resolvedColorClass}`,
         };
       case "solid":
         return {
-          className: "text-white hover:opacity-[0.9]",
-          style: {
-            backgroundColor: color,
-          },
+          className: `hover:opacity-[0.9] ${resolvedColorClass}`,
         };
       case "bordered":
         return {
-          className: "border-2 font-semibold hover:bg-opacity-[0.1]",
-          style: {
-            borderColor: color,
-            color: color,
-          },
+          className: `border-2 font-semibold hover:bg-opacity-[0.1] ${resolvedColorClass}`,
         };
       case "text":
         return {
-          className: "",
-          style: {
-            color: color,
-            backgroundColor: isHovered ? lighten(0.46, color) : "transparent",
-          },
+          className: `hover:bg-opacity-[0.1] ${resolvedColorClass}`,
         };
       case "tonal":
         return {
-          style: {
-            backgroundColor: lighten(0.45, color),
-            color: color,
-          },
+          className: `bg-opacity-[0.5] ${resolvedColorClass}`,
         };
       default:
         return {
           className: "",
-          style: {},
         };
     }
-  }, [variant, color, isHovered]);
+  }, [variant, color]);
 
   const buttonStyles = useMemo(() => {
     if (isIconOnly) {
       return {
-        className: "w-[40px] h-[40px] flex items-center justify-center", // Pevný 1:1 poměr stran
-        style: {
-          padding: 0, // Zrušení vnitřního paddingu
-        },
+        className: "w-[40px] h-[40px] flex items-center justify-center",
       };
     }
 
@@ -153,9 +145,8 @@ const Button: FC<ButtonProps & AriaAttributes> = ({
         transition-all
         overflow-hidden
       `}
+      disabled={isDisabled}
       style={{
-        ...variantStyles.style,
-        ...buttonStyles.style,
         ...customStyle,
       }}
       onClick={handleClick}

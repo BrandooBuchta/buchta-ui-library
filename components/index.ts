@@ -2,6 +2,7 @@
 export { default as CookiesBar } from "./utils/CookiesBar";
 export { default as Footer } from "./utils/Footer";
 export { default as Card } from "./UI/Card";
+export { default as Accordion } from "./UI/Accordion";
 export { default as Button } from "./UI/Button";
 export { default as TextInput } from "./UI/TextInput";
 export { default as Select } from "./UI/Select";

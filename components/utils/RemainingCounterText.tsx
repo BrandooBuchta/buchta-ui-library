@@ -15,7 +15,7 @@ const RemainingCounterText: FC<RemainingCounterTextProps> = ({
 
   return (
     <span>
-      {currentState} z {max} zbývá ({percentage.toFixed(0)}%)
+      {currentState}/{max} ({percentage.toFixed(0)}%)
     </span>
   );
 };

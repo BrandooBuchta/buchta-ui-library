@@ -1,7 +1,8 @@
 import { FC } from "react";
 interface RemainingCounterProps {
-    title: string;
-    subTitle: string;
+    title: JSX.Element | JSX.Element[] | string;
+    subTitle: JSX.Element | JSX.Element[] | string;
+    bgColor?: string;
     min: number;
     max: number;
     currentState: number;

@@ -1,11 +1,12 @@
 import React, { FC } from "react";
 
 interface RemainingCounterProps {
-  title: string;
-  subTitle: string;
-  min: number; // Minimální hodnota, např. 0
-  max: number; // Maximální hodnota, např. 100 (celkový počet klientů/kusů)
-  currentState: number; // Aktuální stav (kolik kusů/klientů zbývá)
+  title: JSX.Element | JSX.Element[] | string;
+  subTitle: JSX.Element | JSX.Element[] | string;
+  bgColor?: string;
+  min: number;
+  max: number;
+  currentState: number;
 }
 
 const RemainingCounter: FC<RemainingCounterProps> = ({
@@ -14,6 +15,7 @@ const RemainingCounter: FC<RemainingCounterProps> = ({
   min,
   max,
   currentState,
+  bgColor,
 }) => {
   const percentage = ((currentState - min) / (max - min)) * 100;
 
@@ -23,12 +25,12 @@ const RemainingCounter: FC<RemainingCounterProps> = ({
       <p className="text-lg mb-4">{subTitle}</p>
       <div className="w-[90%] bg-gray-200 rounded-full h-6 mb-4 mx-auto">
         <div
-          className="bg-pink-500 h-6 rounded-full"
+          className={`${bgColor || "bg-pink-500"} h-6 rounded-full`}
           style={{ width: `${percentage}%` }}
         />
       </div>
       <p className="text-lg font-bold">
-        {currentState} z {max} zbývá
+        {currentState}/{max}
       </p>
     </div>
   );

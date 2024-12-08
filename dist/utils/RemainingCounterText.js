@@ -11,6 +11,6 @@ var RemainingCounterText = function RemainingCounterText(_ref) {
     max = _ref.max,
     currentState = _ref.currentState;
   var percentage = (currentState - min) / (max - min) * 100;
-  return /*#__PURE__*/_react["default"].createElement("span", null, currentState, " z ", max, " zb\xFDv\xE1 (", percentage.toFixed(0), "%)");
+  return /*#__PURE__*/_react["default"].createElement("span", null, currentState, "/", max, " (", percentage.toFixed(0), "%)");
 };
 var _default = exports["default"] = RemainingCounterText;

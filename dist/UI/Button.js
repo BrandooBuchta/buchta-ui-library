@@ -7,7 +7,6 @@ Object.defineProperty(exports, "__esModule", {
 exports["default"] = void 0;
 var _react = _interopRequireWildcard(require("react"));
 var _framerMotion = require("framer-motion");
-var _polished = require("polished");
 function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
 function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -33,7 +32,7 @@ var Button = function Button(_ref) {
     variant = _ref$variant === void 0 ? "shadow" : _ref$variant,
     onClick = _ref.onClick,
     _ref$color = _ref.color,
-    color = _ref$color === void 0 ? "#006fee" : _ref$color,
+    color = _ref$color === void 0 ? "primary" : _ref$color,
     _ref$radius = _ref.radius,
     radius = _ref$radius === void 0 ? "lg" : _ref$radius,
     className = _ref.className,
@@ -42,7 +41,9 @@ var Button = function Button(_ref) {
     customStyle = _ref.style,
     ariaLabel = _ref["aria-label"],
     _ref$isIconOnly = _ref.isIconOnly,
-    isIconOnly = _ref$isIconOnly === void 0 ? false : _ref$isIconOnly;
+    isIconOnly = _ref$isIconOnly === void 0 ? false : _ref$isIconOnly,
+    _ref$isDisabled = _ref.isDisabled,
+    isDisabled = _ref$isDisabled === void 0 ? false : _ref$isDisabled;
   var _useState = (0, _react.useState)([]),
     _useState2 = _slicedToArray(_useState, 2),
     rippleArray = _useState2[0],
@@ -52,61 +53,49 @@ var Button = function Button(_ref) {
     isHovered = _useState4[0],
     setIsHovered = _useState4[1];
   var buttonRef = (0, _react.useRef)(null);
+  var resolveColor = function resolveColor() {
+    switch (color) {
+      case "primary":
+        return "bg-primary text-white hover:bg-primary-dark";
+      case "secondary":
+        return "bg-secondary text-white hover:bg-secondary-dark";
+      default:
+        return "text-white hover:opacity-[0.9]";
+    }
+  };
   var variantStyles = (0, _react.useMemo)(function () {
+    var resolvedColorClass = resolveColor();
     switch (variant) {
       case "shadow":
         return {
-          className: "shadow-2xl text-white hover:shadow-lg",
-          style: {
-            boxShadow: "0 6px 25px -3px ".concat((0, _polished.darken)(0.2, color), ", 0 2px 3px -2px ").concat((0, _polished.lighten)(0.2, color)),
-            backgroundColor: color
-          }
+          className: "shadow-2xl hover:shadow-lg ".concat(resolvedColorClass)
         };
       case "solid":
         return {
-          className: "text-white hover:opacity-[0.9]",
-          style: {
-            backgroundColor: color
-          }
+          className: "hover:opacity-[0.9] ".concat(resolvedColorClass)
         };
       case "bordered":
         return {
-          className: "border-2 font-semibold hover:bg-opacity-[0.1]",
-          style: {
-            borderColor: color,
-            color: color
-          }
+          className: "border-2 font-semibold hover:bg-opacity-[0.1] ".concat(resolvedColorClass)
         };
       case "text":
         return {
-          className: "",
-          style: {
-            color: color,
-            backgroundColor: isHovered ? (0, _polished.lighten)(0.46, color) : "transparent"
-          }
+          className: "hover:bg-opacity-[0.1] ".concat(resolvedColorClass)
         };
       case "tonal":
         return {
-          style: {
-            backgroundColor: (0, _polished.lighten)(0.45, color),
-            color: color
-          }
+          className: "bg-opacity-[0.5] ".concat(resolvedColorClass)
         };
       default:
         return {
-          className: "",
-          style: {}
+          className: ""
         };
     }
-  }, [variant, color, isHovered]);
+  }, [variant, color]);
   var buttonStyles = (0, _react.useMemo)(function () {
     if (isIconOnly) {
       return {
-        className: "w-[40px] h-[40px] flex items-center justify-center",
-        // Pevný 1:1 poměr stran
-        style: {
-          padding: 0 // Zrušení vnitřního paddingu
-        }
+        className: "w-[40px] h-[40px] flex items-center justify-center"
       };
     }
     switch (size) {
@@ -164,7 +153,8 @@ var Button = function Button(_ref) {
     ref: buttonRef,
     "aria-label": ariaLabel || "Button",
     className: "\n        font-semibold\n        ".concat(className, "\n        ").concat(variantStyles.className, "\n        ").concat(buttonStyles.className, "\n        rounded-").concat(radius, "\n        relative\n        transition-all\n        overflow-hidden\n      "),
-    style: _objectSpread(_objectSpread(_objectSpread({}, variantStyles.style), buttonStyles.style), customStyle),
+    disabled: isDisabled,
+    style: _objectSpread({}, customStyle),
     onClick: handleClick,
     onMouseEnter: function onMouseEnter() {
       return setIsHovered(true);

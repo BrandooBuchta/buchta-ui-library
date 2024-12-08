@@ -3,6 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+Object.defineProperty(exports, "Accordion", {
+  enumerable: true,
+  get: function get() {
+    return _Accordion["default"];
+  }
+});
 Object.defineProperty(exports, "BuchtaUIProvider", {
   enumerable: true,
   get: function get() {
@@ -144,6 +150,7 @@ Object.defineProperty(exports, "WarningBar", {
 var _CookiesBar = _interopRequireDefault(require("./utils/CookiesBar"));
 var _Footer = _interopRequireDefault(require("./utils/Footer"));
 var _Card = _interopRequireDefault(require("./UI/Card"));
+var _Accordion = _interopRequireDefault(require("./UI/Accordion"));
 var _Button = _interopRequireDefault(require("./UI/Button"));
 var _TextInput = _interopRequireDefault(require("./UI/TextInput"));
 var _Select = _interopRequireDefault(require("./UI/Select"));

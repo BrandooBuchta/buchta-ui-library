@@ -5,13 +5,14 @@ interface ButtonProps {
     variant?: "shadow" | "solid" | "bordered" | "text" | "tonal";
     radius?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
     onClick?: MouseEventHandler<HTMLButtonElement> | (() => Promise<void>);
-    color?: string;
+    color?: "primary" | "secondary" | string;
     className?: string;
     endContent?: JSX.Element;
     startContent?: JSX.Element;
     style?: CSSProperties;
     "aria-label"?: string;
     isIconOnly?: boolean;
+    isDisabled?: boolean;
 }
 declare const Button: FC<ButtonProps & AriaAttributes>;
 export default Button;

@@ -8,6 +8,7 @@ import Card from "@/components/UI/Card";
 import TextInput from "@/components/UI/TextInput"; // Import the TextInput component
 import SelectInput from "@/components/UI/Select"; // Import the SelectInput component
 import CookiesBar from "@/components/utils/CookiesBar";
+import FAQ from "@/components/mocks/FAQ";
 
 const templates = [
   "click-through-page",
@@ -176,6 +177,11 @@ const Home: FC = () => {
             variant={variant as "bordered" | "underlined" | "filled"}
           />
         ))}
+      </div>
+
+      <div>
+        <h1>Accordion</h1>
+        <FAQ />
       </div>
 
       <p>TODO: Create a variant: like shadow, minimalistic, ...</p>

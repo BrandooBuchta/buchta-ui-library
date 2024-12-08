@@ -11,7 +11,8 @@ var RemainingCounter = function RemainingCounter(_ref) {
     subTitle = _ref.subTitle,
     min = _ref.min,
     max = _ref.max,
-    currentState = _ref.currentState;
+    currentState = _ref.currentState,
+    bgColor = _ref.bgColor;
   var percentage = (currentState - min) / (max - min) * 100;
   return /*#__PURE__*/_react["default"].createElement("div", {
     className: "text-center mb-6"
@@ -22,12 +23,12 @@ var RemainingCounter = function RemainingCounter(_ref) {
   }, subTitle), /*#__PURE__*/_react["default"].createElement("div", {
     className: "w-[90%] bg-gray-200 rounded-full h-6 mb-4 mx-auto"
   }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: "bg-pink-500 h-6 rounded-full",
+    className: "".concat(bgColor || "bg-pink-500", " h-6 rounded-full"),
     style: {
       width: "".concat(percentage, "%")
     }
   })), /*#__PURE__*/_react["default"].createElement("p", {
     className: "text-lg font-bold"
-  }, currentState, " z ", max, " zb\xFDv\xE1"));
+  }, currentState, "/", max));
 };
 var _default = exports["default"] = RemainingCounter;
