@@ -35,11 +35,11 @@ var Button = function Button(_ref) {
     color = _ref$color === void 0 ? "primary" : _ref$color,
     _ref$radius = _ref.radius,
     radius = _ref$radius === void 0 ? "lg" : _ref$radius,
-    className = _ref.className,
+    _ref$className = _ref.className,
+    className = _ref$className === void 0 ? "" : _ref$className,
     endContent = _ref.endContent,
     startContent = _ref.startContent,
     customStyle = _ref.style,
-    ariaLabel = _ref["aria-label"],
     _ref$isIconOnly = _ref.isIconOnly,
     isIconOnly = _ref$isIconOnly === void 0 ? false : _ref$isIconOnly,
     _ref$isDisabled = _ref.isDisabled,
@@ -48,50 +48,45 @@ var Button = function Button(_ref) {
     _useState2 = _slicedToArray(_useState, 2),
     rippleArray = _useState2[0],
     setRippleArray = _useState2[1];
-  var _useState3 = (0, _react.useState)(false),
-    _useState4 = _slicedToArray(_useState3, 2),
-    isHovered = _useState4[0],
-    setIsHovered = _useState4[1];
   var buttonRef = (0, _react.useRef)(null);
-  var resolveColor = function resolveColor() {
-    switch (color) {
-      case "primary":
-        return "bg-primary text-white hover:bg-primary-dark";
-      case "secondary":
-        return "bg-secondary text-white hover:bg-secondary-dark";
-      default:
-        return "text-white hover:opacity-[0.9]";
-    }
+  var resolveColor = function resolveColor(color) {
+    if (color === "primary") return "bg-primary text-white hover:bg-primary-dark";
+    if (color === "secondary") return "bg-secondary text-white hover:bg-secondary-dark";
+    if (/^[a-zA-Z]+$/.test(color)) return "bg-".concat(color, "-500 text-white hover:bg-").concat(color, "-600");
+    if (/^#([0-9A-Fa-f]{3}){1,2}$/.test(color)) return "";
+    return "bg-gray-500 text-white hover:bg-gray-600";
   };
-  var variantStyles = (0, _react.useMemo)(function () {
-    var resolvedColorClass = resolveColor();
-    switch (variant) {
-      case "shadow":
-        return {
-          className: "shadow-2xl hover:shadow-lg ".concat(resolvedColorClass)
-        };
-      case "solid":
-        return {
-          className: "hover:opacity-[0.9] ".concat(resolvedColorClass)
-        };
-      case "bordered":
-        return {
-          className: "border-2 font-semibold hover:bg-opacity-[0.1] ".concat(resolvedColorClass)
-        };
-      case "text":
-        return {
-          className: "hover:bg-opacity-[0.1] ".concat(resolvedColorClass)
-        };
-      case "tonal":
-        return {
-          className: "bg-opacity-[0.5] ".concat(resolvedColorClass)
-        };
-      default:
-        return {
-          className: ""
-        };
+  var getStyle = function getStyle(color) {
+    if (/^#([0-9A-Fa-f]{3}){1,2}$/.test(color)) {
+      return {
+        backgroundColor: color,
+        color: "#fff"
+      };
     }
-  }, [variant, color]);
+    return {};
+  };
+  var getShadowStyle = function getShadowStyle(color) {
+    if (/^[a-zA-Z]+$/.test(color)) {
+      return {
+        boxShadow: "0px 4px 10px rgba(var(--tw-color-".concat(color, "-rgb, 0, 0, 0), 0.5)")
+      };
+    } else if (/^#([0-9A-Fa-f]{3}){1,2}$/.test(color)) {
+      var hexToRgb = function hexToRgb(hex) {
+        var bigint = parseInt(hex.slice(1), 16);
+        var r = bigint >> 16 & 255;
+        var g = bigint >> 8 & 255;
+        var b = bigint & 255;
+        return "".concat(r, ", ").concat(g, ", ").concat(b);
+      };
+      return {
+        boxShadow: "0px 4px 10px rgba(".concat(hexToRgb(color), ", 0.5)")
+      };
+    }
+    return {};
+  };
+  var colorClass = resolveColor(color);
+  var inlineStyle = getStyle(color);
+  var inlineShadowStyle = variant === "shadow" ? getShadowStyle(color) : {};
   var buttonStyles = (0, _react.useMemo)(function () {
     if (isIconOnly) {
       return {
@@ -101,23 +96,23 @@ var Button = function Button(_ref) {
     switch (size) {
       case "xs":
         return {
-          className: "px-[15px] py-[7.5px] text-xs h-fit"
+          className: "px-[10px] py-[5px] text-xs"
         };
       case "sm":
         return {
-          className: "px-[20px] py-[8px] text-sm h-fit"
+          className: "px-[15px] py-[7px] text-sm"
         };
       case "md":
         return {
-          className: "px-[25px] py-[8px] text-md h-fit"
+          className: "px-[20px] py-[10px] text-md"
         };
       case "lg":
         return {
-          className: "px-[25px] py-[8px] text-lg h-fit"
+          className: "px-[25px] py-[12px] text-lg"
         };
       case "xl":
         return {
-          className: "px-[25px] py-[10px] text-xl h-fit"
+          className: "px-[30px] py-[15px] text-xl"
         };
       default:
         return {
@@ -125,6 +120,22 @@ var Button = function Button(_ref) {
         };
     }
   }, [size, isIconOnly]);
+  var variantStyles = (0, _react.useMemo)(function () {
+    switch (variant) {
+      case "shadow":
+        return "hover:shadow-md transition-shadow";
+      case "solid":
+        return "hover:opacity-90";
+      case "bordered":
+        return "border-2 hover:opacity-90";
+      case "text":
+        return "hover:underline";
+      case "tonal":
+        return "bg-opacity-75";
+      default:
+        return "";
+    }
+  }, [variant]);
   var createRipple = function createRipple(event) {
     var button = event.currentTarget;
     var rect = button.getBoundingClientRect();
@@ -151,17 +162,10 @@ var Button = function Button(_ref) {
   };
   return /*#__PURE__*/_react["default"].createElement("button", {
     ref: buttonRef,
-    "aria-label": ariaLabel || "Button",
-    className: "\n        font-semibold\n        ".concat(className, "\n        ").concat(variantStyles.className, "\n        ").concat(buttonStyles.className, "\n        rounded-").concat(radius, "\n        relative\n        transition-all\n        overflow-hidden\n      "),
+    className: "rounded-".concat(radius, " relative overflow-hidden transition-all font-semibold ").concat(className, " ").concat(colorClass, " ").concat(buttonStyles.className, " ").concat(variantStyles),
     disabled: isDisabled,
-    style: _objectSpread({}, customStyle),
-    onClick: handleClick,
-    onMouseEnter: function onMouseEnter() {
-      return setIsHovered(true);
-    },
-    onMouseLeave: function onMouseLeave() {
-      return setIsHovered(false);
-    }
+    style: _objectSpread(_objectSpread(_objectSpread({}, customStyle), inlineStyle), inlineShadowStyle),
+    onClick: handleClick
   }, rippleArray.map(function (ripple, index) {
     return /*#__PURE__*/_react["default"].createElement(_framerMotion.motion.div, {
       key: index,
@@ -184,7 +188,7 @@ var Button = function Button(_ref) {
       }
     });
   }), isIconOnly ? children : /*#__PURE__*/_react["default"].createElement("div", {
-    className: "flex gap-2"
-  }, [startContent, children, endContent]));
+    className: "flex gap-2 items-center"
+  }, startContent, children, endContent));
 };
 var _default = exports["default"] = Button;

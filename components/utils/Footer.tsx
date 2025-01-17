@@ -40,7 +40,18 @@ const Footer: React.FC<FooterProps> = ({ sections, companyName }) => {
                         {item.value}
                       </button>
                     )}
-                    {item.icon}
+                    {item.href ? (
+                      <a
+                        className="hover:underline text-default-200"
+                        href={item.href}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {item.icon}
+                      </a>
+                    ) : (
+                      item.icon
+                    )}
                   </li>
                 ))}
               </ul>

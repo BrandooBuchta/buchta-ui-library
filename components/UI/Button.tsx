@@ -1,12 +1,10 @@
 import React, {
-  MouseEventHandler,
-  useState,
-  useRef,
   FC,
   MouseEvent,
   CSSProperties,
+  useState,
+  useRef,
   useMemo,
-  AriaAttributes,
 } from "react";
 import { motion } from "framer-motion";
 
@@ -15,77 +13,76 @@ interface ButtonProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   variant?: "shadow" | "solid" | "bordered" | "text" | "tonal";
   radius?: "none" | "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "full";
-  onClick?: MouseEventHandler<HTMLButtonElement> | (() => Promise<void>);
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   color?: "primary" | "secondary" | string;
   className?: string;
   endContent?: JSX.Element;
   startContent?: JSX.Element;
   style?: CSSProperties;
-  "aria-label"?: string;
   isIconOnly?: boolean;
   isDisabled?: boolean;
 }
 
-const Button: FC<ButtonProps & AriaAttributes> = ({
+const Button: FC<ButtonProps> = ({
   children,
   size = "md",
   variant = "shadow",
   onClick,
   color = "primary",
   radius = "lg",
-  className,
+  className = "",
   endContent,
   startContent,
   style: customStyle,
-  "aria-label": ariaLabel,
   isIconOnly = false,
   isDisabled = false,
 }) => {
   const [rippleArray, setRippleArray] = useState<any[]>([]);
-  const [isHovered, setIsHovered] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  const resolveColor = () => {
-    switch (color) {
-      case "primary":
-        return "bg-primary text-white hover:bg-primary-dark";
-      case "secondary":
-        return "bg-secondary text-white hover:bg-secondary-dark";
-      default:
-        return `text-white hover:opacity-[0.9]`;
-    }
+  const resolveColor = (color: string) => {
+    if (color === "primary")
+      return "bg-primary text-white hover:bg-primary-dark";
+    if (color === "secondary")
+      return "bg-secondary text-white hover:bg-secondary-dark";
+    if (/^[a-zA-Z]+$/.test(color))
+      return `bg-${color}-500 text-white hover:bg-${color}-600`;
+    if (/^#([0-9A-Fa-f]{3}){1,2}$/.test(color)) return "";
+
+    return "bg-gray-500 text-white hover:bg-gray-600";
   };
 
-  const variantStyles = useMemo(() => {
-    const resolvedColorClass = resolveColor();
-
-    switch (variant) {
-      case "shadow":
-        return {
-          className: `shadow-2xl hover:shadow-lg ${resolvedColorClass}`,
-        };
-      case "solid":
-        return {
-          className: `hover:opacity-[0.9] ${resolvedColorClass}`,
-        };
-      case "bordered":
-        return {
-          className: `border-2 font-semibold hover:bg-opacity-[0.1] ${resolvedColorClass}`,
-        };
-      case "text":
-        return {
-          className: `hover:bg-opacity-[0.1] ${resolvedColorClass}`,
-        };
-      case "tonal":
-        return {
-          className: `bg-opacity-[0.5] ${resolvedColorClass}`,
-        };
-      default:
-        return {
-          className: "",
-        };
+  const getStyle = (color: string) => {
+    if (/^#([0-9A-Fa-f]{3}){1,2}$/.test(color)) {
+      return { backgroundColor: color, color: "#fff" };
     }
-  }, [variant, color]);
+
+    return {};
+  };
+
+  const getShadowStyle = (color: string): CSSProperties => {
+    if (/^[a-zA-Z]+$/.test(color)) {
+      return {
+        boxShadow: `0px 4px 10px rgba(var(--tw-color-${color}-rgb, 0, 0, 0), 0.5)`,
+      };
+    } else if (/^#([0-9A-Fa-f]{3}){1,2}$/.test(color)) {
+      const hexToRgb = (hex: string): string => {
+        const bigint = parseInt(hex.slice(1), 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return `${r}, ${g}, ${b}`;
+      };
+      return {
+        boxShadow: `0px 4px 10px rgba(${hexToRgb(color)}, 0.5)`,
+      };
+    }
+    return {};
+  };
+
+  const colorClass = resolveColor(color);
+  const inlineStyle = getStyle(color);
+  const inlineShadowStyle = variant === "shadow" ? getShadowStyle(color) : {};
 
   const buttonStyles = useMemo(() => {
     if (isIconOnly) {
@@ -93,22 +90,38 @@ const Button: FC<ButtonProps & AriaAttributes> = ({
         className: "w-[40px] h-[40px] flex items-center justify-center",
       };
     }
-
     switch (size) {
       case "xs":
-        return { className: "px-[15px] py-[7.5px] text-xs h-fit" };
+        return { className: "px-[10px] py-[5px] text-xs" };
       case "sm":
-        return { className: "px-[20px] py-[8px] text-sm h-fit" };
+        return { className: "px-[15px] py-[7px] text-sm" };
       case "md":
-        return { className: "px-[25px] py-[8px] text-md h-fit" };
+        return { className: "px-[20px] py-[10px] text-md" };
       case "lg":
-        return { className: "px-[25px] py-[8px] text-lg h-fit" };
+        return { className: "px-[25px] py-[12px] text-lg" };
       case "xl":
-        return { className: "px-[25px] py-[10px] text-xl h-fit" };
+        return { className: "px-[30px] py-[15px] text-xl" };
       default:
         return { className: "" };
     }
   }, [size, isIconOnly]);
+
+  const variantStyles = useMemo(() => {
+    switch (variant) {
+      case "shadow":
+        return `hover:shadow-md transition-shadow`;
+      case "solid":
+        return "hover:opacity-90";
+      case "bordered":
+        return "border-2 hover:opacity-90";
+      case "text":
+        return "hover:underline";
+      case "tonal":
+        return "bg-opacity-75";
+      default:
+        return "";
+    }
+  }, [variant]);
 
   const createRipple = (event: MouseEvent<HTMLButtonElement>) => {
     const button = event.currentTarget;
@@ -134,24 +147,10 @@ const Button: FC<ButtonProps & AriaAttributes> = ({
   return (
     <button
       ref={buttonRef}
-      aria-label={ariaLabel || "Button"}
-      className={`
-        font-semibold
-        ${className}
-        ${variantStyles.className}
-        ${buttonStyles.className}
-        rounded-${radius}
-        relative
-        transition-all
-        overflow-hidden
-      `}
+      className={`rounded-${radius} relative overflow-hidden transition-all font-semibold ${className} ${colorClass} ${buttonStyles.className} ${variantStyles}`}
       disabled={isDisabled}
-      style={{
-        ...customStyle,
-      }}
+      style={{ ...customStyle, ...inlineStyle, ...inlineShadowStyle }}
       onClick={handleClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {rippleArray.map((ripple, index) => (
         <motion.div
@@ -178,7 +177,11 @@ const Button: FC<ButtonProps & AriaAttributes> = ({
       {isIconOnly ? (
         children
       ) : (
-        <div className="flex gap-2">{[startContent, children, endContent]}</div>
+        <div className="flex gap-2 items-center">
+          {startContent}
+          {children}
+          {endContent}
+        </div>
       )}
     </button>
   );

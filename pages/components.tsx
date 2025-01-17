@@ -44,6 +44,7 @@ const Home: FC = () => {
             endContent={<i className="mdi mdi-heart" />}
             size={e as "xs" | "sm" | "md" | "lg" | "xl"}
             onClick={callMercedes}
+            color="#e13784"
           >
             Button
           </Button>
